@@ -19,15 +19,29 @@ platform :ios do
   desc "Description of what the lane does"
   lane :beta do
     update_code_signing_settings(
-           use_automatic_signing: true,
+           use_automatic_signing: false,
            path: "demo-application.xcodeproj",
-           team_id: "GV7474YXX4",
-           bundle_identifier: "com.anko.demo-application",
+           team_id: "D2739LNA3V",
+           bundle_identifier: "com.anko.demo-app.dev",
+           profile_name: "DemoApplication"
     )
     build_app(
       export_method:"development"
     )
   end
+lane :alpha do
+    update_code_signing_settings(
+           use_automatic_signing:false,
+           path: "demo-application.xcodeproj",
+           team_id: "D2739LNA3V",
+           bundle_identifier: "com.anko.demo-app.qa",
+           profile_name: "DemoApplication"
+    )
+    build_app(
+      export_method:"development"
+    )
+  end
+
   lane :custom_lane do
     build_app(
   export_method: "development",
