@@ -24,6 +24,14 @@ platform :ios do
     build_app(
       export_method:"development"
     )
+appcenter_upload(
+            api_token: "d91388a16798c4ba5a5b619079f2ba1dca279adc",
+            owner_name: "avovchuk-f8sy",
+            owner_type: "user", # Default is user - set to organization for :app::c::enter: organiz
+            app_name: "demo-application",
+            file: "demo-application.ipa",
+            notify_testers: true # Set to false if you don't want to notify testers of your new release (default: `false`)
+    ) 
   end
 lane :alpha do
     update_code_signing_settings(
