@@ -18,7 +18,9 @@ default_platform(:ios)
 platform :ios do
   desc "Description of what the lane does"
   lane :beta do
-    match(type:'development', readonly: true)
+    match(type:'development',
+          git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
+          readonly: true)
     build_app(
       export_method:"development"
     )
