@@ -18,13 +18,7 @@ default_platform(:ios)
 platform :ios do
   desc "Description of what the lane does"
   lane :beta do
-    update_code_signing_settings(
-           use_automatic_signing: false,
-           path: "demo-application.xcodeproj",
-           team_id: "D2739LNA3V",
-           bundle_identifier: "com.anko.demo-app.dev",
-           profile_name: "DemoApplication"
-    )
+    match(type:'development', readonly: true)
     build_app(
       export_method:"development"
     )
