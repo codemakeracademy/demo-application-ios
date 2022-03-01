@@ -13,16 +13,46 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+
 default_platform(:ios)
 
 platform :ios do
   desc "Description of what the lane does"
+def delete_temp_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: true,
+    timeout: 3600,
+    lock_when_sleeps: true
+  )
+end
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
+end
+
   lane :beta do
+    keychain_name ='demo'
+    keychain_password = 'ZGVtbwo='
+    ensure_temp_keychain(keychain_name, keychain_password)
     match(type:'development',
           git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
+          keychain_name: keychain_name,
+          keychain_password: keychain_password,
           readonly: true)
     build_app(
-      export_method:"development"
+      export_method:"development",
+      export_options: {
+        provisioningProfiles: {
+            "com.anko.demo-app.dev" => "match Development com.anko.demo-app.*"
+        }
+      }
     )
 appcenter_upload(
             api_token: "d91388a16798c4ba5a5b619079f2ba1dca279adc",
@@ -32,6 +62,7 @@ appcenter_upload(
             file: "demo-application.ipa",
             notify_testers: true # Set to false if you don't want to notify testers of your new release (default: `false`)
     ) 
+delete_temp_keychain(keychain_name)
   end
 lane :alpha do
     update_code_signing_settings(
