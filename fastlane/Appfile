@@ -1,6 +1,0 @@
-app_identifier("com.anko.demo-app.*") # The bundle identifier of your app
-apple_id("avovchuk@ankocorp.com")# Your Apple email address
-#username("avovchuk@ankocorp.com")
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
